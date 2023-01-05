@@ -1,8 +1,6 @@
 package com.olshevchenko.movielandparser.utils;
 
 import lombok.SneakyThrows;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
