@@ -30,7 +30,7 @@ public class MovieService {
     private final UrlFileReader urlFileReader;
 
     @PostConstruct
-    public void addMovie() {
+    public void saveMovie() {
         List<Movie> movies = parseMovie();
         for (Movie movie : movies) {
             Long movieId = movieRepository.save(movie);
