@@ -4,9 +4,9 @@ import com.olshevchenko.movielandparser.config.ParseConfig;
 import com.olshevchenko.movielandparser.entity.Country;
 import com.olshevchenko.movielandparser.entity.Genre;
 import com.olshevchenko.movielandparser.entity.Movie;
-import com.olshevchenko.movielandparser.repository.CountryRepository;
-import com.olshevchenko.movielandparser.repository.GenreRepository;
-import com.olshevchenko.movielandparser.repository.MovieRepository;
+import com.olshevchenko.movielandparser.repository.JdbcCountryRepository;
+import com.olshevchenko.movielandparser.repository.JdbcGenreRepository;
+import com.olshevchenko.movielandparser.repository.JdbcMovieRepository;
 import com.olshevchenko.movielandparser.utils.UrlFileReader;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MovieService {
 
-    private final MovieRepository movieRepository;
-    private final CountryRepository countryRepository;
-    private final GenreRepository genreRepository;
+    private final JdbcMovieRepository movieRepository;
+    private final JdbcCountryRepository countryRepository;
+    private final JdbcGenreRepository genreRepository;
     private final ParseConfig config;
     private final UrlFileReader urlFileReader;
 
@@ -33,7 +33,32 @@ public class MovieService {
     public void addMovie() {
         List<Movie> movies = parseMovie();
         for (Movie movie : movies) {
-            movieRepository.save(movie);
+            Long movieId = movieRepository.save(movie);
+
+            Set<Country> countries = movie.getCountries();
+            for (Country c : countries) {
+                Optional<Country> country = countryRepository.findByName(c.getName());
+                Long countryId;
+                if (country.isEmpty()) {
+                    countryId = countryRepository.save(c);
+                } else {
+                    countryId = country.get().getId();
+                }
+                countryRepository.saveIds(movieId, countryId);
+            }
+
+            Set<Genre> genres = movie.getGenres();
+            for (Genre g : genres) {
+                Optional<Genre> genre = genreRepository.findByName(g.getName());
+                Long genreId;
+                if (genre.isEmpty()) {
+                    genreId = genreRepository.save(g);
+                } else {
+                    genreId = genre.get().getId();
+                }
+                genreRepository.saveIds(movieId, genreId);
+            }
+
         }
     }
 
@@ -42,9 +67,6 @@ public class MovieService {
         String url = config.getMoviesUrl();
         List<String> rows = urlFileReader.read(url);
         List<Movie> movies = new ArrayList<>();
-
-        Set<String> countriesSet = new HashSet<>();
-        Set<String> genresSet = new HashSet<>();
 
         Movie movie = new Movie();
         for (int i = 0; i < rows.size(); i++) {
@@ -56,21 +78,21 @@ public class MovieService {
                 movie.setYear(Integer.parseInt(rows.get(i)));
             } else if (i % 7 == 2) {
                 String[] countriesString = rows.get(i).split(", ");
-                countriesSet.addAll(Arrays.stream(countriesString).toList());
                 Set<Country> countries = new HashSet<>();
-                Country country = new Country();
                 for (String countryString : countriesString) {
-                    country.setName(countryString);
+                    Country country = Country.builder()
+                            .name(countryString)
+                            .build();
                     countries.add(country);
                 }
                 movie.setCountries(countries);
             }else if (i % 7 == 3) {
                 String[] genresString = rows.get(i).split(", ");
-                genresSet.addAll(Arrays.stream(genresString).toList());
                 Set<Genre> genres = new HashSet<>();
-                Genre genre = new Genre();
                 for (String genreString : genresString) {
-                    genre.setName(genreString);
+                    Genre genre = Genre.builder()
+                            .name(genreString)
+                            .build();
                     genres.add(genre);
                 }
                 movie.setGenres(genres);
@@ -85,26 +107,8 @@ public class MovieService {
                 movies.add(movie);
             }
         }
-
-        addCountries(countriesSet);
-        addGenres(genresSet);
         return movies;
     }
 
-    void addCountries(Set<String> countriesSet) {
-        for (String c : countriesSet) {
-            Country country = new Country();
-            country.setName(c);
-            countryRepository.save(country);
-        }
-    }
-
-    void addGenres(Set<String> genresSet) {
-        for (String g : genresSet) {
-            Genre genre = new Genre();
-            genre.setName(g);
-            genreRepository.save(genre);
-        }
-    }
 
 }
