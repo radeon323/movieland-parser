@@ -15,4 +15,5 @@ import org.springframework.context.annotation.Configuration;
 public class ParseConfig {
 
     private String moviesUrl;
+    private String postersUrl;
 }
