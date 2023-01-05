@@ -3,9 +3,9 @@ package com.olshevchenko.movielandparser.entity;
 import jakarta.persistence.*;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.NaturalId;
+import org.hibernate.Hibernate;
 
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -58,4 +58,17 @@ public class Movie {
     private double rating;
 
     private double price;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Movie movie = (Movie) o;
+        return id != null && Objects.equals(id, movie.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
