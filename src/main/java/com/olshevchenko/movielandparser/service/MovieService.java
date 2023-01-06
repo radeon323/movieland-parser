@@ -119,9 +119,10 @@ public class MovieService {
         List<Poster> posters = new ArrayList<>();
 
         for (String row : rows) {
-            Poster poster = Poster.builder().build();
-            poster.setMovieName(row.split(" https:")[0]);
-            poster.setPicturePath("https:" + row.split(" https:")[1]);
+            Poster poster = Poster.builder()
+                    .movieName(row.split(" https:")[0])
+                    .picturePath("https:" + row.split(" https:")[1])
+                    .build();
             posters.add(poster);
         }
         return posters;
