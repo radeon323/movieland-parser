@@ -32,6 +32,8 @@ public class MovieService {
 
     @PostConstruct
     public void saveMovie() {
+        movieRepository.deleteAll();
+
         List<Movie> moviesWithoutPoster = parseMovie();
         List<Movie> movies = addPoster(moviesWithoutPoster);
 

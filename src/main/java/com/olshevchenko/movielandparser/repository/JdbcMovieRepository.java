@@ -7,4 +7,6 @@ import com.olshevchenko.movielandparser.entity.Movie;
  */
 public interface JdbcMovieRepository {
     Long save(Movie movie);
+
+    void deleteAll();
 }
