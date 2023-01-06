@@ -18,7 +18,6 @@ public class UrlFileReader {
     @SneakyThrows
     public List<String> read(String path) {
         List<String> rows = new ArrayList<>();
-        System.out.println(path);
         URL fileUrl = new URL(path);
         BufferedReader in = new BufferedReader(new InputStreamReader(fileUrl.openStream()));
 

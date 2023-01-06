@@ -18,7 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
 
-    private static final String SAVE = "INSERT INTO movies (name_ukr, name_eng, year, description, rating, price) VALUES (:name_ukr, :name_eng, :year, :description, :rating, :price);";
+    private static final String SAVE = "INSERT INTO movies (name_ukr, name_eng, year, description, rating, price, picture_path) VALUES (:name_ukr, :name_eng, :year, :description, :rating, :price, :picture_path);";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
@@ -31,6 +31,7 @@ public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
         parameters.addValue("description", movie.getDescription());
         parameters.addValue("rating", movie.getRating());
         parameters.addValue("price", movie.getPrice());
+        parameters.addValue("picture_path", movie.getPicturePath());
         namedParameterJdbcTemplate.update(SAVE, parameters, keyHolder, new String[] { "id" });
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }

@@ -4,6 +4,7 @@ import com.olshevchenko.movielandparser.config.ParseConfig;
 import com.olshevchenko.movielandparser.entity.Country;
 import com.olshevchenko.movielandparser.entity.Genre;
 import com.olshevchenko.movielandparser.entity.Movie;
+import com.olshevchenko.movielandparser.entity.Poster;
 import com.olshevchenko.movielandparser.repository.JdbcCountryRepository;
 import com.olshevchenko.movielandparser.repository.JdbcGenreRepository;
 import com.olshevchenko.movielandparser.repository.JdbcMovieRepository;
@@ -31,7 +32,9 @@ public class MovieService {
 
     @PostConstruct
     public void saveMovie() {
-        List<Movie> movies = parseMovie();
+        List<Movie> moviesWithoutPoster = parseMovie();
+        List<Movie> movies = addPoster(moviesWithoutPoster);
+
         for (Movie movie : movies) {
             Long movieId = movieRepository.save(movie);
 
@@ -105,6 +108,32 @@ public class MovieService {
                 String row = rows.get(i).split(":")[1];
                 movie.setPrice(Double.parseDouble(row));
                 movies.add(movie);
+            }
+        }
+        return movies;
+    }
+
+    List<Poster> parsePoster() {
+        String url = config.getPostersUrl();
+        List<String> rows = urlFileReader.read(url);
+        List<Poster> posters = new ArrayList<>();
+
+        for (String row : rows) {
+            Poster poster = Poster.builder().build();
+            poster.setMovieName(row.split(" https:")[0]);
+            poster.setPicturePath("https:" + row.split(" https:")[1]);
+            posters.add(poster);
+        }
+        return posters;
+    }
+
+    List<Movie> addPoster(List<Movie> movies) {
+        List<Poster> posters = parsePoster();
+        for (Movie movie : movies) {
+            for (Poster poster : posters) {
+                if (Objects.equals(movie.getNameUkr(), poster.getMovieName())) {
+                    movie.setPicturePath(poster.getPicturePath());
+                }
             }
         }
         return movies;
