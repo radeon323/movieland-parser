@@ -16,4 +16,6 @@ public class ParseConfig {
 
     private String moviesUrl;
     private String postersUrl;
+    private String usersUrl;
+    private String reviewsUrl;
 }

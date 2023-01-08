@@ -20,7 +20,7 @@ import java.util.Objects;
 public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
 
     private static final String SAVE = "INSERT INTO movies (name_ukr, name_eng, year, description, rating, price, picture_path) VALUES (:name_ukr, :name_eng, :year, :description, :rating, :price, :picture_path);";
-    private static final String DELETE_ALL = "DELETE FROM movies;";
+    private static final String DELETE_ALL = "DELETE FROM movie_country; DELETE FROM movie_genre; DELETE FROM movies;";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
 
