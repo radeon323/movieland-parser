@@ -16,14 +16,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DefaultJdbcUserRepository implements JdbcUserRepository {
 
-    private static final String SAVE = "INSERT INTO users (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password);";
+    private static final String SAVE = "INSERT INTO users (nick_name, email, password) VALUES (:nick_name, :email, :password);";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public void save(User user) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("first_name", user.getFirstName());
-        parameters.put("last_name", user.getLastName());
+        parameters.put("nick_name", user.getNickName());
         parameters.put("email", user.getEmail());
         parameters.put("password", user.getPassword());
         namedParameterJdbcTemplate.update(SAVE, parameters);

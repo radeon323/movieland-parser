@@ -41,8 +41,7 @@ public class UserService {
         for (int i = 0; i < rows.size(); i++) {
             if (i % 3 == 0) {
                 user = new User();
-                user.setFirstName(rows.get(i).split(" ")[0]);
-                user.setLastName(rows.get(i).split(" ")[1]);
+                user.setNickName(rows.get(i));
             } else if (i % 3 == 1) {
                 user.setEmail(rows.get(i));
             } else if (i % 3 == 2) {
