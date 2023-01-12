@@ -7,6 +7,7 @@ import com.olshevchenko.movielandparser.utils.UrlFileReader;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,11 +24,14 @@ public class UserService {
     private final JdbcUserRepository userRepository;
     private final ParseConfig config;
     private final UrlFileReader urlFileReader;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void saveUser() {
         List<User> users = parseUser();
         for (User user : users) {
+            String password = user.getPassword();
+            user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
         }
     }
