@@ -21,11 +21,6 @@ public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
 
     private static final String SAVE = "INSERT INTO movies (name_ukr, name_eng, year, description, rating, price, picture_path) VALUES (:name_ukr, :name_eng, :year, :description, :rating, :price, :picture_path);";
     private static final String DELETE_ALL = "DELETE FROM movie_country; DELETE FROM movie_genre; DELETE FROM movies; DELETE FROM reviews; DELETE FROM users;";
-    private static final String ALTER_SEQUENCE = "ALTER SEQUENCE movies_id_seq RESTART WITH 1 INCREMENT BY 50;" +
-                                                "ALTER SEQUENCE countries_id_seq RESTART WITH 1 INCREMENT BY 50;" +
-                                                "ALTER SEQUENCE genres_id_seq RESTART WITH 1 INCREMENT BY 50;" +
-                                                "ALTER SEQUENCE reviews_id_seq RESTART WITH 1 INCREMENT BY 50;" +
-                                                "ALTER SEQUENCE users_id_seq RESTART WITH 1 INCREMENT BY 50;";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
 
@@ -47,6 +42,5 @@ public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
     @Override
     public void deleteAll() {
         jdbcTemplate.update(DELETE_ALL);
-        jdbcTemplate.update(ALTER_SEQUENCE);
     }
 }

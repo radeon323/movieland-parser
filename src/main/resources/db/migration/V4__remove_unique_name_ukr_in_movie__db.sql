@@ -1,1 +1,0 @@
-ALTER TABLE movies DROP CONSTRAINT movies_name_ukr_key;

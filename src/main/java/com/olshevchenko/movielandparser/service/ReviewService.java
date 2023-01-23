@@ -43,8 +43,7 @@ public class ReviewService {
                 review = new Review();
                 review.setMovieName(rows.get(i));
             } else if (i % 3 == 1) {
-                review.setUserFirstName(rows.get(i).split(" ")[0]);
-                review.setUserLastName(rows.get(i).split(" ")[1]);
+                review.setUserNickName(rows.get(i));
             } else if (i % 3 == 2) {
                 review.setContent(rows.get(i));
                 reviews.add(review);

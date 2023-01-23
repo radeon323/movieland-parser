@@ -10,7 +10,6 @@ public class Review {
 
     private Long id;
     private String movieName;
-    private String userFirstName;
-    private String userLastName;
+    private String userNickName;
     private String content;
 }

@@ -16,15 +16,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DefaultJdbcReviewRepository implements JdbcReviewRepository {
 
-    private static final String SAVE = "INSERT INTO reviews (movie_name, user_first_name, user_last_name, content) VALUES (:movie_name, :user_first_name, :user_last_name, :content);";
+    private static final String SAVE = "INSERT INTO reviews (movie_name, user_nick_name, content) VALUES (:movie_name, :user_nick_name, :content);";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public void save(Review review) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("movie_name", review.getMovieName());
-        parameters.put("user_first_name", review.getUserFirstName());
-        parameters.put("user_last_name", review.getUserLastName());
+        parameters.put("user_nick_name", review.getUserNickName());
         parameters.put("content", review.getContent());
         namedParameterJdbcTemplate.update(SAVE, parameters);
     }
