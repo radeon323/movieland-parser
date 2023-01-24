@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DefaultJdbcUserRepository implements JdbcUserRepository {
 
-    private static final String SAVE = "INSERT INTO users (nick_name, email, password) VALUES (:nick_name, :email, :password);";
+    private static final String SAVE = "INSERT INTO users (nick_name, email, password, role) VALUES (:nick_name, :email, :password, (:role::role));";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
@@ -25,6 +25,7 @@ public class DefaultJdbcUserRepository implements JdbcUserRepository {
         parameters.put("nick_name", user.getNickName());
         parameters.put("email", user.getEmail());
         parameters.put("password", user.getPassword());
+        parameters.put("role", user.getRole().name());
         namedParameterJdbcTemplate.update(SAVE, parameters);
     }
 }

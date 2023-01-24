@@ -12,4 +12,5 @@ public class User {
     private String nickName;
     private String email;
     private String password;
+    private Role role;
 }

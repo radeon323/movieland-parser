@@ -1,6 +1,7 @@
 package com.olshevchenko.movielandparser.service;
 
 import com.olshevchenko.movielandparser.config.ParseConfig;
+import com.olshevchenko.movielandparser.entity.Role;
 import com.olshevchenko.movielandparser.entity.User;
 import com.olshevchenko.movielandparser.repository.JdbcUserRepository;
 import com.olshevchenko.movielandparser.utils.UrlFileReader;
@@ -45,6 +46,7 @@ public class UserService {
         for (int i = 0; i < rows.size(); i++) {
             if (i % 3 == 0) {
                 user = new User();
+                user.setRole(Role.USER);
                 user.setNickName(rows.get(i));
             } else if (i % 3 == 1) {
                 user.setEmail(rows.get(i));
