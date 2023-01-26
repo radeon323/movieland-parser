@@ -9,7 +9,6 @@ import com.olshevchenko.movielandparser.repository.JdbcCountryRepository;
 import com.olshevchenko.movielandparser.repository.JdbcGenreRepository;
 import com.olshevchenko.movielandparser.repository.JdbcMovieRepository;
 import com.olshevchenko.movielandparser.utils.UrlFileReader;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class MovieService {
     private final ParseConfig config;
     private final UrlFileReader urlFileReader;
 
-    @PostConstruct
+
     public void saveMovie() {
         movieRepository.deleteAll();
 
@@ -73,12 +72,16 @@ public class MovieService {
         List<String> rows = urlFileReader.read(url);
         List<Movie> movies = new ArrayList<>();
 
-        Movie movie = new Movie();
+        Movie movie = Movie.builder().build();
         for (int i = 0; i < rows.size(); i++) {
             if (i % 7 == 0) {
-                movie = new Movie();
-                movie.setNameUkr(rows.get(i).split("/")[0]);
-                movie.setNameEng(rows.get(i).split("/")[1]);
+                movie = Movie.builder().build();
+                String[] name = rows.get(i).split("/");
+                String nameUkr = name[0];
+                String nameEng = name[1];
+                nameUkr = Utils.removeWaste(nameUkr);
+                movie.setNameUkr(nameUkr);
+                movie.setNameEng(nameEng);
             } else if (i % 7 == 1) {
                 movie.setYear(Integer.parseInt(rows.get(i)));
             } else if (i % 7 == 2) {
@@ -121,8 +124,12 @@ public class MovieService {
         List<Poster> posters = new ArrayList<>();
 
         for (String row : rows) {
+
+            String before = row.split(" https:")[0];
+            before = Utils.removeWaste(before);
+
             Poster poster = Poster.builder()
-                    .movieName(row.split(" https:")[0])
+                    .movieName(before)
                     .picturePath("https:" + row.split(" https:")[1])
                     .build();
             posters.add(poster);

@@ -5,7 +5,6 @@ import com.olshevchenko.movielandparser.entity.Role;
 import com.olshevchenko.movielandparser.entity.User;
 import com.olshevchenko.movielandparser.repository.JdbcUserRepository;
 import com.olshevchenko.movielandparser.utils.UrlFileReader;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,8 +26,8 @@ public class UserService {
     private final UrlFileReader urlFileReader;
     private final PasswordEncoder passwordEncoder;
 
-    @PostConstruct
     public void saveUser() {
+        userRepository.deleteAll();
         List<User> users = parseUser();
         for (User user : users) {
             String password = user.getPassword();
@@ -42,12 +41,14 @@ public class UserService {
         List<String> rows = urlFileReader.read(url);
         List<User> users = new ArrayList<>();
 
-        User user = new User();
+        User user = User.builder().build();
         for (int i = 0; i < rows.size(); i++) {
             if (i % 3 == 0) {
-                user = new User();
+                user = User.builder().build();
                 user.setRole(Role.USER);
-                user.setNickName(rows.get(i));
+                String nickName = rows.get(i);
+                nickName = Utils.removeWaste(nickName);
+                user.setNickName(nickName);
             } else if (i % 3 == 1) {
                 user.setEmail(rows.get(i));
             } else if (i % 3 == 2) {
