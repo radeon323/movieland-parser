@@ -26,6 +26,9 @@ public class DefaultJdbcCountryRepository implements JdbcCountryRepository {
     private static final String SAVE = "INSERT INTO countries (name) VALUES (:name);";
     private static final String SAVE_IDS = "INSERT INTO movie_country (movie_id, country_id) VALUES (:movie_id, :country_id);";
     private static final String FIND_BY_NAME = "SELECT id, name FROM countries WHERE name = ?";
+    private static final String DELETE_ALL = "DELETE FROM countries;";
+    private static final String ALTER_SEQUENCE_1 = "ALTER SEQUENCE countries_id_seq RESTART WITH 1 INCREMENT BY 1";
+    private static final String ALTER_SEQUENCE_50 = "ALTER SEQUENCE countries_id_seq START WITH 1 INCREMENT BY 50";
     private static final CountryResultSetExtractor COUNTRY_RESULT_SET_EXTRACTOR = new CountryResultSetExtractor();
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
@@ -50,5 +53,16 @@ public class DefaultJdbcCountryRepository implements JdbcCountryRepository {
     @Override
     public Optional<Country> findByName(String countryName) {
         return jdbcTemplate.query(FIND_BY_NAME, COUNTRY_RESULT_SET_EXTRACTOR, countryName);
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update(ALTER_SEQUENCE_1);
+        jdbcTemplate.update(DELETE_ALL);
+    }
+
+    @Override
+    public void setAlterSequence() {
+        jdbcTemplate.update(ALTER_SEQUENCE_50);
     }
 }

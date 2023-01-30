@@ -26,6 +26,9 @@ public class DefaultJdbcGenreRepository implements JdbcGenreRepository {
     private static final String SAVE = "INSERT INTO genres (name) VALUES (:name);";
     private static final String SAVE_IDS = "INSERT INTO movie_genre (movie_id, genre_id) VALUES (:movie_id, :genre_id);";
     private static final String FIND_BY_NAME = "SELECT id, name FROM genres WHERE name = ?";
+    private static final String DELETE_ALL = "DELETE FROM genres;";
+    private static final String ALTER_SEQUENCE_1 = "ALTER SEQUENCE genres_id_seq RESTART WITH 1 INCREMENT BY 1";
+    private static final String ALTER_SEQUENCE_50 = "ALTER SEQUENCE genres_id_seq START WITH 1 INCREMENT BY 50";
     private static final GenreResultSetExtractor GENRE_RESULT_SET_EXTRACTOR = new GenreResultSetExtractor();
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
@@ -50,5 +53,16 @@ public class DefaultJdbcGenreRepository implements JdbcGenreRepository {
     @Override
     public Optional<Genre> findByName(String genreName) {
         return jdbcTemplate.query(FIND_BY_NAME, GENRE_RESULT_SET_EXTRACTOR, genreName);
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update(ALTER_SEQUENCE_1);
+        jdbcTemplate.update(DELETE_ALL);
+    }
+
+    @Override
+    public void setAlterSequence() {
+        jdbcTemplate.update(ALTER_SEQUENCE_50);
     }
 }

@@ -8,4 +8,5 @@ import com.olshevchenko.movielandparser.entity.Review;
 public interface JdbcReviewRepository {
     void save(Review review);
     void deleteAll();
+    void setAlterSequence();
 }

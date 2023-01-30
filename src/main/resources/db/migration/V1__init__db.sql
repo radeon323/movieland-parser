@@ -55,12 +55,14 @@ CREATE TABLE movie_genre(
 ALTER TABLE movies ALTER COLUMN id SET DEFAULT nextval('movies_id_seq');
 ALTER TABLE genres ALTER COLUMN id SET DEFAULT nextval('genres_id_seq');
 ALTER TABLE countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq');
+ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq');
 ALTER TABLE reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq');
 
-ALTER SEQUENCE movies_id_seq INCREMENT BY 50;
-ALTER SEQUENCE genres_id_seq INCREMENT BY 50;
-ALTER SEQUENCE countries_id_seq INCREMENT BY 50;
-ALTER SEQUENCE reviews_id_seq INCREMENT BY 50;
+ALTER SEQUENCE movies_id_seq START WITH 1 INCREMENT BY 1;
+ALTER SEQUENCE genres_id_seq START WITH 1 INCREMENT BY 1;
+ALTER SEQUENCE countries_id_seq START WITH 1 INCREMENT BY 1;
+ALTER SEQUENCE reviews_id_seq START WITH 1 INCREMENT BY 1;
+ALTER SEQUENCE users_id_seq START WITH 1 INCREMENT BY 1;
 
 ALTER TABLE movie_genre ADD CONSTRAINT genre_id FOREIGN KEY (genre_id) REFERENCES genres (id);
 ALTER TABLE movie_genre ADD CONSTRAINT movie_id FOREIGN KEY (movie_id) REFERENCES movies (id);

@@ -12,4 +12,5 @@ public interface JdbcUserRepository {
     User findByNickName(String nickName);
     List<User> findAll();
     void deleteAll();
+    void setAlterSequence();
 }

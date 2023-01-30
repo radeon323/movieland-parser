@@ -11,4 +11,6 @@ public interface JdbcCountryRepository {
     Long save(Country country);
     void saveIds(Long movieId, Long countryId);
     Optional<Country> findByName(String countryName);
+    void deleteAll();
+    void setAlterSequence();
 }

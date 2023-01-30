@@ -36,6 +36,7 @@ public class ReviewService {
         for (Review review : reviews) {
             reviewRepository.save(review);
         }
+        reviewRepository.setAlterSequence();
     }
 
     List<Review> parseReview() {

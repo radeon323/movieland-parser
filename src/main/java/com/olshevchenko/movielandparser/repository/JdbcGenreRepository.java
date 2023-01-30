@@ -11,4 +11,6 @@ public interface JdbcGenreRepository {
     Long save(Genre genre);
     void saveIds(Long movieId, Long genreId);
     Optional<Genre> findByName(String genreName);
+    void deleteAll();
+    void setAlterSequence();
 }

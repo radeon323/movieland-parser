@@ -12,4 +12,5 @@ public interface JdbcMovieRepository {
     Movie findByNameUkr(String nameUkr);
     List<Movie> findAll();
     void deleteAll();
+    void setAlterSequence();
 }

@@ -21,6 +21,8 @@ public class DefaultJdbcUserRepository implements JdbcUserRepository {
 
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private static final String DELETE_ALL = "DELETE FROM users;";
+    private static final String ALTER_SEQUENCE_1 = "ALTER SEQUENCE users_id_seq RESTART WITH 1 INCREMENT BY 1";
+    private static final String ALTER_SEQUENCE_50 = "ALTER SEQUENCE users_id_seq START WITH 1 INCREMENT BY 50";
     private static final String SAVE = "INSERT INTO users (nick_name, email, password, role) VALUES (:nick_name, :email, :password, (:role::role));";
     private static final String FIND_BY_NICK_NAME_SQL = "SELECT id, nick_name, email, password, role FROM users WHERE nick_name = ?";
     private static final String FIND_ALL_SQL = "SELECT id, nick_name, email, password, role FROM users";
@@ -49,6 +51,12 @@ public class DefaultJdbcUserRepository implements JdbcUserRepository {
 
     @Override
     public void deleteAll() {
+        jdbcTemplate.update(ALTER_SEQUENCE_1);
         jdbcTemplate.update(DELETE_ALL);
+    }
+
+    @Override
+    public void setAlterSequence() {
+        jdbcTemplate.update(ALTER_SEQUENCE_50);
     }
 }

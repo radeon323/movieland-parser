@@ -32,6 +32,8 @@ public class MovieService {
 
     public void saveMovie() {
         movieRepository.deleteAll();
+        countryRepository.deleteAll();
+        genreRepository.deleteAll();
 
         List<Movie> moviesWithoutPoster = parseMovie();
         List<Movie> movies = addPoster(moviesWithoutPoster);
@@ -64,6 +66,9 @@ public class MovieService {
             }
 
         }
+        movieRepository.setAlterSequence();
+        countryRepository.setAlterSequence();
+        genreRepository.setAlterSequence();
     }
 
     List<Movie> parseMovie() {
