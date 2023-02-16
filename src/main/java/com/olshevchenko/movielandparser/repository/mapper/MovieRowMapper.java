@@ -14,7 +14,7 @@ public class MovieRowMapper implements RowMapper<Movie> {
     public Movie mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Long id = resultSet.getLong("id");
         String nameUkr = resultSet.getString("name_ukr");
-        String nameEng = resultSet.getString("name_eng");
+        String nameNative = resultSet.getString("name_native");
         int year = resultSet.getInt("year");
         String description = resultSet.getString("description");
         double rating = resultSet.getDouble("rating");
@@ -24,7 +24,7 @@ public class MovieRowMapper implements RowMapper<Movie> {
         return Movie.builder()
                 .id(id)
                 .nameUkr(nameUkr)
-                .nameEng(nameEng)
+                .nameNative(nameNative)
                 .year(year)
                 .description(description)
                 .rating(rating)

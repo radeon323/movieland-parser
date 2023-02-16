@@ -22,12 +22,12 @@ import java.util.Objects;
 public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
 
     private static final MovieRowMapper MOVIE_ROW_MAPPER = new MovieRowMapper();
-    private static final String SAVE = "INSERT INTO movies (name_ukr, name_eng, year, description, rating, price, picture_path) VALUES (:name_ukr, :name_eng, :year, :description, :rating, :price, :picture_path);";
+    private static final String SAVE = "INSERT INTO movies (name_ukr, name_native, year, description, rating, price, picture_path) VALUES (:name_ukr, :name_native, :year, :description, :rating, :price, :picture_path);";
     private static final String DELETE_ALL = "DELETE FROM movie_country; DELETE FROM movie_genre; DELETE FROM reviews; DELETE FROM movies;";
     private static final String ALTER_SEQUENCE_1 = "ALTER SEQUENCE movies_id_seq RESTART WITH 1 INCREMENT BY 1";
     private static final String ALTER_SEQUENCE_50 = "ALTER SEQUENCE movies_id_seq START WITH 1 INCREMENT BY 50";
-    private static final String FIND_BY_NAME_UKR_SQL = "SELECT id, name_ukr, name_eng, year, description, rating, price, picture_path FROM movies WHERE name_ukr = ?";
-    private static final String FIND_ALL_SQL = "SELECT id, name_ukr, name_eng, year, description, rating, price, picture_path FROM movies";
+    private static final String FIND_BY_NAME_UKR_SQL = "SELECT id, name_ukr, name_native, year, description, rating, price, picture_path FROM movies WHERE name_ukr = ?";
+    private static final String FIND_ALL_SQL = "SELECT id, name_ukr, name_native, year, description, rating, price, picture_path FROM movies";
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final JdbcTemplate jdbcTemplate;
 
@@ -36,7 +36,7 @@ public class DefaultJdbcMovieRepository implements JdbcMovieRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("name_ukr", movie.getNameUkr());
-        parameters.addValue("name_eng", movie.getNameEng());
+        parameters.addValue("name_native", movie.getNameNative());
         parameters.addValue("year", movie.getYear());
         parameters.addValue("description", movie.getDescription());
         parameters.addValue("rating", movie.getRating());

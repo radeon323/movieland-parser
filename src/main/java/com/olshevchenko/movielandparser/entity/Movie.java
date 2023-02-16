@@ -15,7 +15,7 @@ public class Movie {
 
     private Long id;
     private String nameUkr;
-    private String nameEng;
+    private String nameNative;
     private int year;
     private Set<Country> countries;
     private Set<Genre> genres;
