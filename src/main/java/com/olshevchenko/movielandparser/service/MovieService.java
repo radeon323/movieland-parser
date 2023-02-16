@@ -83,10 +83,10 @@ public class MovieService {
                 movie = Movie.builder().build();
                 String[] name = rows.get(i).split("/");
                 String nameUkr = name[0];
-                String nameEng = name[1];
+                String nameNative = name[1];
                 nameUkr = Utils.removeWaste(nameUkr);
                 movie.setNameUkr(nameUkr);
-                movie.setNameEng(nameEng);
+                movie.setNameNative(nameNative);
             } else if (i % 7 == 1) {
                 movie.setYear(Integer.parseInt(rows.get(i)));
             } else if (i % 7 == 2) {
